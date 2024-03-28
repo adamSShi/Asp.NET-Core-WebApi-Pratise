@@ -115,5 +115,24 @@ namespace PratiseAPI.Controllers
 
             return CreatedAtAction(nameof(GetById), new {id = regionDomainModel.Id}, regionDTO);
         }
+
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public IActionResult Delete([FromRoute] Guid id)
+        {
+            var regionDomainModel = dbContext.Regions.FirstOrDefault(x => x.Id == id);
+
+            if (regionDomainModel == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                dbContext.Remove(regionDomainModel);
+                dbContext.SaveChanges();
+
+                return NoContent();
+            }
+        }
     }
 }
